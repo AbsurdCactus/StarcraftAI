@@ -2,7 +2,7 @@ import sc2
 from sc2 import run_game, maps, Race, Difficulty
 from sc2.player import Bot, Computer
 from sc2.constants import *  # I need to reference a nexus to use it
-
+#from sc2.constants import NEXUS, PROBE, PYLON, ASSIMILATOR, GATEWAY, CYBERNETICSCORE
 
 class ClayBot(sc2.BotAI):
 
@@ -13,7 +13,7 @@ class ClayBot(sc2.BotAI):
         await self.build_assimilators()
         await self.expand()
         await self.offensive_army_buildings()
-        await self.build_offensive_army()
+        #await self.build_offensive_army()
 
         # await self.expand()
 
@@ -74,16 +74,7 @@ class ClayBot(sc2.BotAI):
             await self.expand_now()'''
 
     async def offensive_army_buildings(self):
-        '''if self.townhalls(UnitTypeId.PYLON).ready.exists:
-            pylon = self.townhalls(UnitTypeId.PYLON).ready.random
-            if self.townhalls(UnitTypeId.GATEWAY).ready.exists:
-                if not self.townhalls(UnitTypeId.CYBERNETICSCORE):
-                    if self.can_afford(UnitTypeId.CYBERNETICSCORE) and not self.already_pending(
-                            UnitTypeId.CYBERNETICSCORE):
-                        await self.build(UnitTypeId.CYBERNETICSCORE, near=pylon)
-            else:
-                if self.can_afford(UnitTypeId.GATEWAY) and not self.already_pending(UnitTypeId.GATEWAY):
-                    await self.build(UnitTypeId.GATEWAY, near=pylon)'''
+        
         if self.structures(PYLON).ready:
             proxy = self.structures(PYLON).closest_to(self.enemy_start_locations[0])
             pylon = self.structures(PYLON).ready.random
@@ -96,10 +87,12 @@ class ClayBot(sc2.BotAI):
             if self.can_afford(GATEWAY) and self.structures(WARPGATE).amount + self.structures(GATEWAY).amount < 4:
                 await self.build(GATEWAY, near=pylon)
 
-    async def build_offensive_army(self,proxy):# TODO fix this function
-        '''for gw in self.structures(GATEWAY).ready.idle:
-            if self.can_afford(STALKER) and self.supply_left > 0:
-                await self.build(gw.train(STALKER))'''
+
+# TODO               FIX BUILD_OFFENSIVE_ARMY()
+# TODO               CHANGE WINDOW RESOLUTION()
+
+    async def build_offensive_army(self,proxy):
+        
 
 
         for warpgate in self.structures(GATEWAY).ready:
@@ -109,9 +102,9 @@ class ClayBot(sc2.BotAI):
                 pos = proxy.position.to2.random_on_distance(4)
                 placement = await self.find_placement(AbilityId.GATEWAYTRAIN_STALKER, pos, placement_step=1)
                 if placement is None:
-                    # return ActionResult.CantFindPlacementLocation
-                    print("can't place")
-                    return
+                    return ActionResult.CantFindPlacementLocation
+                    #print("can't place")
+                    #return
                 self.do(warpgate.warp_in(STALKER, placement), subtract_cost=True, subtract_supply=True)
 
 
