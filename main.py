@@ -13,7 +13,7 @@ class ClayBot(sc2.BotAI):
         await self.build_assimilators()
         await self.expand()
         await self.offensive_army_buildings()
-        #await self.build_offensive_army()
+        await self.build_offensive_army()
 
         # await self.expand()
 
@@ -91,21 +91,16 @@ class ClayBot(sc2.BotAI):
 # TODO               FIX BUILD_OFFENSIVE_ARMY()
 # TODO               CHANGE WINDOW RESOLUTION()
 
-    async def build_offensive_army(self,proxy):
+    async def build_offensive_army(self):
         
+        for gw in self. units(GATEWAY).ready.noqueue:
+            if self.can_afford(STALKER) and self.supply_left > 0:
+                await self.do(gw.train(STALKER))
 
 
-        for warpgate in self.structures(GATEWAY).ready:
-            abilities = await self.get_available_abilities()
-            # all the units have the same cooldown anyway so let's just look at ZEALOT
-            if AbilityId.GATEWAYTRAIN_STALKER in abilities:
-                pos = proxy.position.to2.random_on_distance(4)
-                placement = await self.find_placement(AbilityId.GATEWAYTRAIN_STALKER, pos, placement_step=1)
-                if placement is None:
-                    return ActionResult.CantFindPlacementLocation
-                    #print("can't place")
-                    #return
-                self.do(warpgate.warp_in(STALKER, placement), subtract_cost=True, subtract_supply=True)
+
+
+
 
 
 run_game(maps.get("AcropolisLE"), [
