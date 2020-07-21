@@ -103,7 +103,7 @@ class ClayBot(sc2.BotAI):
 
 
 
-run_game(maps.get("AcropolisLE"), [
+run_game(maps.get("EphemeronLE"), [
     Bot(Race.Protoss, ClayBot()),
     Computer(Race.Terran, Difficulty.Easy)
 ], realtime=False)
